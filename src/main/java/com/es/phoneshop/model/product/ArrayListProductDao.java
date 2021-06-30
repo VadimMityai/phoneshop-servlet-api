@@ -13,6 +13,10 @@ public class ArrayListProductDao implements ProductDao {
         saveSampleProducts();
     }
 
+    public static ProductDao getInstance() {
+        return new ArrayListProductDao();
+    }
+
     @Override
     public synchronized Product getProduct(Long id) throws NoSuchElementException{
         return products.stream()
