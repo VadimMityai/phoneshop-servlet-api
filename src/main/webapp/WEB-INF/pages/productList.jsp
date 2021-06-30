@@ -12,6 +12,7 @@
     <input name="model" value="${param.model}">
     <button>search</button>
   </form>
+  <a href="${pageContext.request.contextPath}/products/advancedSearch">Advanced Search</a>
   <table>
     <thead>
       <tr>
