@@ -1,5 +1,6 @@
 package com.es.phoneshop.model.product;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -51,6 +52,29 @@ public class ArrayListProductDao implements ProductDao {
                     .filter(product -> product.getPrice() != null && product.getStock() > 0)
                     .sorted(comparator)
                     .collect(Collectors.toList());
+    }
+    public List<Product> findProducts(String model, String minS, String maxS) {
+        BigDecimal min = new BigDecimal(0);
+        BigDecimal max =new BigDecimal(0);
+        try {
+            min = new BigDecimal(minS);
+        } catch (NullPointerException e) {
+            min = new BigDecimal(0);
+        }
+        //catch (NumberFormatException e) {}
+        try {
+            max = new BigDecimal(maxS);
+        } catch (NullPointerException e) {
+            max = new BigDecimal(1000);
+        }
+        //catch (NumberFormatException e) {}
+        BigDecimal finalMin = min;
+        BigDecimal finalMax = max;
+        return products.stream()
+                .filter(product -> model == null || model.isEmpty() || product.getDescription().contains(model))
+                .filter(product -> finalMin == null || finalMin.equals(BigDecimal.ZERO) || product.getPrice().doubleValue() >= finalMin.doubleValue())
+                .filter(product -> finalMax == null || finalMax.equals(BigDecimal.ZERO) || product.getPrice().doubleValue() <= finalMax.doubleValue())
+                .collect(Collectors.toList());
     }
 
     @Override
